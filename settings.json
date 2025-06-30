@@ -1,0 +1,189 @@
+{
+    "enemy": {
+        "goblin": {
+            "name":     "Goblin",
+            "hp":       6,
+            "mp":       0,
+            "power":    0,
+            "strength": 4,
+            "defense":  3, 
+            "speed":    3,
+            "xp":       1, 
+            "reward":   2,
+            "death_cry":"gurgles and falls onto the ground in defeat.",
+            "loot":     "leather boots"
+        },
+        "troll": {
+            "name":      "Troll",
+            "hp":       9,
+            "mp":       0,
+            "power":    0,
+            "strength": 6,
+            "defense":  4, 
+            "speed":    2,
+            "xp":       3, 
+            "reward":   4,
+            "death_cry":"growls and slumps to the ground in defeat.",
+            "loot":     "wood hammer"
+        },
+        "zmoch": {
+            "name":     "Zmoch",
+            "hp":       7,
+            "mp":       1,
+            "power":    1,
+            "strength": 5,
+            "defense":  4, 
+            "speed":    3,
+            "xp":       4, 
+            "reward":   4,
+            "death_cry":"'s coconuts fall and it withers in defeat.",
+            "loot":     "coconut helmet"
+        },
+        "unicorn": {
+            "name":     "Unicorn",
+            "hp":       7,
+            "mp":       3,
+            "power":    2,
+            "strength": 5,
+            "defense":  5, 
+            "speed":    4,
+            "xp":       4, 
+            "reward":   5,
+            "death_cry":"neighs and falls to the ground in defeat.",
+            "loot":     "unicorn horn"
+        },
+        "werewolf": {
+            "name":     "Werewolf",
+            "hp":       9,
+            "mp":       0,
+            "power":    0,
+            "strength": 6,
+            "defense":  4, 
+            "speed":    5,
+            "xp":       5, 
+            "reward":   5,
+            "death_cry":"howls in defeat.",
+            "loot":     "fangs"
+        },
+        "skeleton": {
+            "name":     "Skeleton",
+            "hp":       7,
+            "mp":       0,
+            "power":    0,
+            "strength": 4,
+            "defense":  4, 
+            "speed":    3,
+            "xp":       3, 
+            "reward":   3,
+            "death_cry":"crumples into a pile of bones.",
+            "loot":     "bones"
+        },
+        "slime": {
+            "name":     "Blobby",
+            "hp":       4,
+            "mp":       0,
+            "power":    0,
+            "strength": 2,
+            "defense":  2, 
+            "speed":    2,
+            "xp":       1, 
+            "reward":   1,
+            "death_cry":"melts into a puddle.",
+            "loot":     "seeds"
+        },
+        "rat_giant": {
+            "name":     "Giant Rat",
+            "hp":       5,
+            "mp":       0,
+            "power":    0,
+            "strength": 3,
+            "defense":  3, 
+            "speed":    3,
+            "xp":       2, 
+            "reward":   2,
+            "death_cry":"squeaks in agony and curls up, motionless.",
+            "loot":     "flesh"
+        },
+        "wolf": {
+            "name":     "Wolf",
+            "hp":       7,
+            "mp":       0,
+            "power":    0,
+            "strength": 5,
+            "defense":  4, 
+            "speed":    4,
+            "xp":       4, 
+            "reward":   3,
+            "death_cry":"snarls and falls motionless.",
+            "loot":     "fur"
+        }
+    },
+
+    "player": {
+        "human": {
+            "name":     "bob",
+            "hp":       8,
+            "mp":       0,
+            "power":    0,
+            "strength": 2,
+            "defense":  2,
+            "speed":    4,
+            "xp":      0,
+            "level":    1
+        },
+        "elf": {
+            "name":     "legolas",
+            "hp":       8,
+            "mp":       0,
+            "power":    0,
+            "strength": 2,
+            "defense":  2,
+            "speed":    5,
+            "xp":      0
+            },
+        "dwarf": {
+            "name":     "gimly",
+            "hp":       8,
+            "mp":       0,
+            "power":    0,
+            "strength": 2,
+            "defense":  3,
+            "speed":    4,
+            "xp":      0
+            }
+    },
+    "trade": {
+        "warrior": {
+            "hp":       3,
+            "strength": 2,
+            "defense":  2
+        },
+
+        "mage" : {
+            "mp":       20,
+            "power":    2,
+            "strength": -2,
+            "defense":  -2
+        },
+        "archer" : {
+            "hp":       1,
+            "strength": 1,
+            "speed":    2
+        }
+    },
+
+    "weapons": {
+        "sword": {
+            "wood":     2,
+            "stone":    3,
+            "iron":     4
+        },
+        "defense": {
+            "shield": {
+                "wood":     2,
+                "stone":    3,
+                "iron":     4
+            }
+        }
+    }
+}
