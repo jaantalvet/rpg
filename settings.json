@@ -376,36 +376,63 @@
         }
     },
     "attacks": {
+        "melee": {
+            "name":         "melee",
+            "damage":       1,
+            "range":        1,
+            "type":         "melee",
+            "description":  "use close range weapon"
+        },
+        "shoot": {
+            "name":         "shoot",
+            "damage":       1,
+            "range":        1,
+            "type":         "shoot",
+            "description":  "use ranged weapon"
+        },
+        "spell": {
+            "name":         "spell",
+            "damage":       1,
+            "range":        1,
+            "type":         "spell",
+            "description":  "use magic"
+        },
         "punch": {
-            "name":     "punch",
-            "damage":   1,
-            "hands":    1,
-            "type":     "melee",
+            "name":         "punch",
+            "damage":       1,
+            "range":        1,
+            "type":         "melee",
             "description":  "basic punch"
         },
         "kick": {
-            "name":     "punch",
-            "damage":   1,
-            "hands":    1,
-            "type":     "melee",
+            "name":         "kick",
+            "damage":       1,
+            "range":        1,
+            "type":         "melee",
             "description":  "basic kick"
         },
         "charge": {
-            "name":     "punch",
-            "damage":   1,
-            "type":     "melee",
+            "name":         "punch",
+            "damage":       1,
+            "range":        1,
+            "type":         "melee",
             "description":  "charge at the enemy"
         },
         "goo ball": {
-            "damage":   1,
-            "type":     "melee",
+            "name":         "goo ball",
+            "damage":       1,
+            "range":        1,
+            "type":         "melee",
             "description":  "throws a gooey ball of slime"
         },
         "bite": {
-            "damage":   1,
-            "type":     "melee",
+            "name":         "bite",
+            "damage":       1,
+            "range":        1,
+            "type":         "melee",
             "description":  "basic punch"
-        },
+        }
+    },
     "weapons":{
         "wood staff": {
             "damage":   3,

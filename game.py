@@ -149,11 +149,10 @@ class Character():
 
 
 class Attack:
-    def __init__(self, name, damage, hands, range, allowed):
+    def __init__(self, name, damage, range, allowed):
         self.name = name
-        self.damage = damage
-        self.hands = hands
-        self.range = range
+        self.damage = damage #weapon modifies
+        self.range = range #speed modifies
         self.allowed = allowed
 
     def execute(self, attacker, target):
