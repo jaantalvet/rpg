@@ -7,9 +7,8 @@ import json
 
 settings="settings.json"
 
-def load_enemies_from_json(filepath):
-    """Loads character data from a JSON file.""" 
-    # later we could just load a single dict with players & enemies
+def load_data_from_json(filepath, date_type):
+    """Loads the attacks from the file"""
     try:
         with open(filepath, 'r') as f:
             data = json.load(f)
@@ -19,32 +18,10 @@ def load_enemies_from_json(filepath):
     except json.JSONDecodeError:
         print(f"Error: Could not decode JSON from {filepath}.")
         return {}
+    
+    return data.get(date_type, {})
 
-    enemies = {}
-    for category,enemy in data.items():
-        if category=="enemy":
-            enemies=enemy
-    return enemies
 
-def load_players_from_json(filepath):
-    """Loads character data from a JSON file.""" 
-    # later we could just load a single dict with players & enemies
-    try:
-        with open(filepath, 'r') as f:
-            data = json.load(f)
-    except FileNotFoundError:
-        print(f"Error: The file {filepath} was not found.")
-        return {}
-    except json.JSONDecodeError:
-        print(f"Error: Could not decode JSON from {filepath}.")
-        return {}
-
-    players = {}
-    for category,player in data.items():
-        if category=="player":
-            players=player
-    return players
- 
 class Character():
     def __init__(self, name, hp, mp, power, strength, defense, speed, xp, level=1, **kwargs):
         self._name      = name
@@ -57,6 +34,14 @@ class Character():
         self._xp        = xp
         self._level     = level
         super().__init__(**kwargs)
+    
+        all_attacks = load_data_from_json(settings, "attacks")
+        player_attacks = all_attacks.get("player", {})
+        self.attacks = {name: Attack(name,**data) for name, data in player_attacks.items()}
+
+        #attacks["punch"].damage
+        # default attack is the first item in the list
+        self.equiped_attack = list(self.attacks.values())[0]
 
     @property
     def name(self):
@@ -74,7 +59,7 @@ class Character():
     def hp(self,val):
         if(val<0):
             self._hp=0
-            print("health clamped at 0")
+            #print("health clamped at 0")
         else:
             self._hp = val
     
@@ -84,7 +69,6 @@ class Character():
 
     @mp.setter
     def mp(self,val):
-
         self._mp = val
     
     @property
@@ -93,7 +77,6 @@ class Character():
 
     @power.setter
     def power(self,val):
-
         self._power = val
 
     @property
@@ -102,8 +85,7 @@ class Character():
 
     @strength.setter
     def strength(self,val):
-
-        pass
+        self._strength = val
             
     @property
     def defense(self):
@@ -111,8 +93,7 @@ class Character():
 
     @defense.setter
     def defense(self,val):
-
-        pass
+        self._defense = val
     
     @property
     def speed(self):
@@ -120,8 +101,7 @@ class Character():
 
     @speed.setter
     def speed(self,val):
-
-        pass
+        self._speed = val
 
     @property
     def xp(self):
@@ -129,8 +109,7 @@ class Character():
 
     @xp.setter
     def xp(self,val):
-
-        pass
+        self._xp = val
 
     @property
     def level(self):
@@ -138,8 +117,7 @@ class Character():
 
     @level.setter
     def level(self,val):
-
-        pass
+        self._level = val
 
     def take_damage(self, amount):
         #print(f"  {self.name} has {self.defense} defense")
@@ -149,23 +127,64 @@ class Character():
             #print("damange rounded to 0")
             damage=0
         self.hp-=damage
-        print(f"  {self.name} takes {damage} damage")
+        print(f"    {self.name} takes {damage} damage")
 
         if(self.hp<=0):
             print(f"  {self.name} has been defeated!")
 
+    def equip_attack(self, attack_name):
+        if attack_name in self.attacks:
+            self.equipped_attack = self.attacks[attack_name]
+            print(f"{self.name} equips {attack_name}")
+        else:
+            print(f"{self.name} doesn't know how to use {attack_name}")
+
+    # this should use whatever is equiped. if weapon, the use it
     def attack(self, target):
         print(f"{self.name} is attacking {target.name}")
-        damage = random.randint(0,self.strength)
+        if self.equiped_attack:
+            self.equiped_attack.execute(self, target)
+        # add default attack if nothing equipped        
+
+
+
+class Attack:
+    def __init__(self, name, damage, hands, range, allowed):
+        self.name = name
+        self.damage = damage
+        self.hands = hands
+        self.range = range
+        self.allowed = allowed
+
+    def execute(self, attacker, target):
+        print(f"  {attacker.name} uses {self.name} on {target.name}")
+        
+        #calculate the damage to take. att * att / (att + def) 
+        damage = (random.randint(0,self.damage) * attacker.strength)
+        # add luck modifier to grant killing blow or miss
+        #r1 = random.randint(0,20)
+        if damage==0:
+            print(f"{attacker.name} misses!")
         target.take_damage(damage)
 
 class Enemy(Character):
-    def __init__(self, name, hp, mp, power, strength, defense, speed, xp, reward, death_cry, loot, level=1, **kwargs):
+    def __init__(self, name, hp, mp, power, strength, defense, speed, xp, reward, death_cry, loot, attack, level=1, **kwargs):
         super().__init__(name, hp, mp, power, strength, defense, speed, xp, level, **kwargs)
 
-    #def __init__(self, name, hp, mp, strength, defense, speed, xp, level, **kwargs):
-
         self._reward = reward
+        self._death_cry = death_cry
+        self._loot = loot
+        self._level = level
+
+        # equip the default attack.  if there are many attacks, choose the first
+        # there is no "attack", then equip punch
+        if(attack):
+            self.equiped_attack = self.attacks[f"{attack}"]
+        elif (len(self.attacks)>0):
+             self.equiped_attack = list(self.attacks.values())[0]
+        else:
+            #add default attack 
+            pass
 
     @property
     def reward(self):
@@ -184,20 +203,24 @@ class Human(Character):
         
         # do we need a modifier method? add property, hp, then +/- for class
         # modifier: +1 charisma
+        #self.equiped_attack = self.attacks[f"{attack}"]
 
 class Elf(Character):
-    def __init__(self, name, hp, mp, power, strength, defense, speed, xp, level=1,**kwargs):
+    def __init__(self, name, hp, mp, power, strength, defense, speed, xp, attack="short bow", level=1,**kwargs):
         super().__init__(name, hp, mp, power, strength, defense, speed, xp, level, **kwargs)
 
-    # modifier: +1 speed
+        # modifier: +1 speed
+        self.speed+=1
+        self.equiped_attack = self.attacks[f"{attack}"]
+        print(f"************** attack: {self.equiped_attack}")
 
 class Dwarf(Character):
     def __init__(self, name, hp, mp, power, strength, defense, speed, xp, level=1, **kwargs):
         super().__init__(name, hp, mp, power, strength, defense, speed, xp, level, **kwargs)
 
+        # modifier: +1 defense
         self.defense+=1
-    # modifier: +1 defense
-
+        
 class MagicUserMixin:
     def __init__(self, spell_power, **kwargs):
         super().__init__(**kwargs)
@@ -241,6 +264,23 @@ class Warrior(PowerAttackMixin, Character):
 class Mage(MagicUserMixin, Character):
     def __init__(self, name, hp, mp, strength, defense, speed, xp, level, spell_power, **kwargs):
         super().__init__(name=name, hp=hp, mp=mp, strength=strength, defense=defense, speed=speed, exp=xp, level=level, spell_power=spell_power, **kwargs)
+        spell_data = load_data_from_json(settings, "spells") # Load spells
+        self.spells = {name: Attack(name, **data) for name, data in spell_data.items()}
+        self.equipped_spell = list(self.spells.values())[0] if self.spells else None
+
+    # override equip_attack to make mages use "equip_spell"
+    def equip_spell(self,spell_name):
+        if spell_name in self.spells:
+            self.equipped_spell = self.spells[spell_name]
+            print(f"{self.name} prepares the spell {spell_name}")
+        else:
+            print(f"{self.name} does not know the spell {spell_name}!")
+
+    def cast(self, target):
+        if self.equipped_spell:
+            self.equipped_spell.execute(self, target)
+        else:
+            print(f"{self.name} has no spell prepared")
 
     #they ALL do attack, but the specialty is in the mixin
     def attack(self, target):
@@ -260,11 +300,14 @@ class Battle():
 
         self.battle_stats(char1,char2)        
 
+        player_won = False #ugly hack
         while char1.hp>0 and char2.hp>0 and self.round<=9:
             
+
             char1.attack(char2)
             if char2.hp==0:
                 self.winner = char1
+                player_won = True
                 break
             
             char2.attack(char1)
@@ -276,18 +319,21 @@ class Battle():
             self.battle_round(self.round)
             self.battle_stats(char1,char2)
 
-        print("\n"+ "*"*20)
         if self.winner!=None:
-            print(f"WINNER: {self.winner.name}")
+            print("\n" + "*"*30)
+            print(f"          WINNER: {self.winner.name}")
+            print(f"*"*30)
             # calculate reward
-            reward = self.char2.reward
-            print(f"reward: {reward}")
+            if player_won==True:
+                reward = self.char2.reward
+                print(f"Player gained {reward} experience.")
+                print(f"{self.char2.name} {self.char2._death_cry}")
+
 
         else: print(f"DRAW (no winner)")
         print("*"*20)
 
     def battle_round(self, round):
-        print("\n" + "*"*30)
         print(f"*********** Round {round} **********")
         print(f"*"*30)
 
@@ -298,7 +344,6 @@ class Battle():
         print(f"{title:10}{char1.hp:>10}{char2.hp:>10}")
         print(f"*"*30)
     
-
 if __name__=="__main__":
     '''
     # Enemies              1  2    3   4         5     6     7     8
@@ -317,19 +362,14 @@ if __name__=="__main__":
     #print(f"subclasses {Character.__subclasses__()}") 
     '''
 
-    enemies = load_enemies_from_json(settings)
-    goblin = enemies["zmoch"]
-    g = Enemy(**goblin)
-    print(f"enemy name: {g.name}, hp: {g.hp}")
+    enemies = load_data_from_json(settings, "enemy")
+    goblin = enemies["goblin"]
+    enemy = Enemy(**goblin)
+    print(f"enemy name: {enemy.name}, hp: {enemy.hp}")
 
-    enemies = load_enemies_from_json(settings)
-    zmoch = enemies["goblin"]
-    e = Enemy(**zmoch)
-    print(f"enemy name: {e.name}, hp: {e.hp}")
+    players = load_data_from_json(settings)
+    human = players["human"]
+    player = Human(**players["human"])
+    print(f"player name: {player.name}, hp: {player.hp}")
 
-    # players = load_players_from_json(settings)
-    # #human = players["elf"]
-    # elf = Enemy(**enemies["goblin"])
-    # print(f"player name: {elf.name}, hp: {elf.hp}")
-
-    b=Battle(g,e)
+    b=Battle(player,enemy)
