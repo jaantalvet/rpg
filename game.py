@@ -36,8 +36,9 @@ class Character():
         super().__init__(**kwargs)
     
         all_attacks = load_data_from_json(settings, "attacks")
-        player_attacks = all_attacks.get("player", {})
-        self.attacks = {name: Attack(name,**data) for name, data in player_attacks.items()}
+        #now get which one?
+        char_attacks = all_attacks.get("player", {})
+        self.attacks = {name: Attack(name,**data) for name, data in char_attacks.items()}
 
         #attacks["punch"].damage
         # default attack is the first item in the list
@@ -362,8 +363,8 @@ if __name__=="__main__":
     '''
 
     enemies = load_data_from_json(settings, "enemy")
-    goblin = enemies["goblin"]
-    enemy = Enemy(**goblin)
+    slime = enemies["slime"]
+    enemy = Enemy(**slime)
     print(f"enemy name: {enemy.name}, hp: {enemy.hp}")
 
     players = load_data_from_json(settings)

@@ -39,7 +39,8 @@
             "xp":       1, 
             "reward":   2,
             "death_cry":"gurgles and falls onto the ground in defeat.",
-            "loot":     "leather boots"
+            "loot":     "leather boots",
+            "attack":   "pointy stick"
         },
         "troll": {
             "name":     "Troll",
@@ -52,7 +53,8 @@
             "xp":       3, 
             "reward":   4,
             "death_cry":"growls and slumps to the ground in defeat.",
-            "loot":     "wood hammer"
+            "loot":     "wood hammer",
+            "attack":   "hammer bash"
         },
         "zmoch": {
             "name":     "Zmoch",
@@ -65,7 +67,8 @@
             "xp":       4, 
             "reward":   4,
             "death_cry":"'s coconuts fall and it withers in defeat.",
-            "loot":     "coconut helmet"
+            "loot":     "coconut helmet",
+            "attack":   "razor leaf"
         },
         "unicorn": {
             "name":     "Unicorn",
@@ -131,7 +134,7 @@
             "speed":    4,
             "xp":      0,
             "level":    1,
-            "attacks":  "punch"
+            "attack":  "punch"
         },
         "Elf": {
             "name":     "Legolas",
@@ -143,7 +146,7 @@
             "speed":    5,
             "xp":       0,
             "level":    1,
-            "attacks":  "kick"
+            "attack":  "kick"
             },
         "Dwarf": {
             "name":     "Gimly",
@@ -155,7 +158,7 @@
             "speed":    4,
             "xp":       0,
             "level":    1,
-            "attacks":  "charge"
+            "attack":  "charge"
             }
     },
     "class": {
@@ -412,8 +415,8 @@
             "description":  "basic kick"
         },
         "charge": {
-            "name":         "punch",
-            "damage":       1,
+            "name":         "charge",
+            "damage":       2,
             "range":        1,
             "type":         "melee",
             "description":  "charge at the enemy"
@@ -430,7 +433,7 @@
             "damage":       1,
             "range":        1,
             "type":         "melee",
-            "description":  "basic punch"
+            "description":  "snaps jaws at enemy"
         }
     },
     "weapons":{
